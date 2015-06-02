@@ -26,6 +26,7 @@
 		FE45EE2A1B1D6A4500F39BF8 /* 11.png in Resources */ = {isa = PBXBuildFile; fileRef = FE45EE1C1B1D6A4500F39BF8 /* 11.png */; };
 		FE45EE2B1B1D6A4500F39BF8 /* 12.png in Resources */ = {isa = PBXBuildFile; fileRef = FE45EE1D1B1D6A4500F39BF8 /* 12.png */; };
 		FE45EE2C1B1D6A4500F39BF8 /* 13.png in Resources */ = {isa = PBXBuildFile; fileRef = FE45EE1E1B1D6A4500F39BF8 /* 13.png */; };
+		FE45EE2E1B1D6FF400F39BF8 /* UICheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE45EE2D1B1D6FF400F39BF8 /* UICheckbox.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		FE45EE1C1B1D6A4500F39BF8 /* 11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 11.png; sourceTree = "<group>"; };
 		FE45EE1D1B1D6A4500F39BF8 /* 12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 12.png; sourceTree = "<group>"; };
 		FE45EE1E1B1D6A4500F39BF8 /* 13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 13.png; sourceTree = "<group>"; };
+		FE45EE2D1B1D6FF400F39BF8 /* UICheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICheckbox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				FE45EDD51B1D697500F39BF8 /* AppDelegate.swift */,
+				FE45EE2D1B1D6FF400F39BF8 /* UICheckbox.swift */,
 				FE45EDD71B1D697500F39BF8 /* ViewController.swift */,
 				FE45EDD91B1D697500F39BF8 /* Main.storyboard */,
 				FE45EDDC1B1D697600F39BF8 /* Images.xcassets */,
@@ -265,6 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE45EDD81B1D697500F39BF8 /* ViewController.swift in Sources */,
+				FE45EE2E1B1D6FF400F39BF8 /* UICheckbox.swift in Sources */,
 				FE45EDD61B1D697500F39BF8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

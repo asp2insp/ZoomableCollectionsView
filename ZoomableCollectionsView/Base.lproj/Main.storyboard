@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -35,7 +36,16 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ols-ph-1f3">
                                                     <rect key="frame" x="0.0" y="0.0" width="147" height="142"/>
+                                                    <gestureRecognizers/>
                                                 </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="St9-tx-dvF" customClass="UICheckbox" customModule="ZoomableCollectionsView" customModuleProvider="target">
+                                                    <rect key="frame" x="8" y="8" width="30" height="30"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="6Gk-uK-eix"/>
+                                                        <constraint firstAttribute="width" constant="30" id="k0W-T9-cfg"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -44,14 +54,18 @@
                                             <constraint firstItem="Ols-ph-1f3" firstAttribute="leading" secondItem="TTr-oj-wIB" secondAttribute="leading" id="Dvy-BS-xuo"/>
                                             <constraint firstItem="Ols-ph-1f3" firstAttribute="top" secondItem="TTr-oj-wIB" secondAttribute="top" id="Ecs-z9-Hpc"/>
                                             <constraint firstAttribute="bottom" secondItem="Ols-ph-1f3" secondAttribute="bottom" id="fyM-DI-NFT"/>
+                                            <constraint firstItem="St9-tx-dvF" firstAttribute="leading" secondItem="TTr-oj-wIB" secondAttribute="leadingMargin" id="uX5-X0-zFC"/>
+                                            <constraint firstItem="St9-tx-dvF" firstAttribute="top" secondItem="TTr-oj-wIB" secondAttribute="topMargin" id="vRq-S9-dfv"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="checkbox" destination="St9-tx-dvF" id="Sqg-ek-PVr"/>
                                             <outlet property="image" destination="Ols-ph-1f3" id="DrY-RV-Idf"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="tSb-FW-BEK"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="ExP-SR-dKO"/>
                                 </connections>
                             </collectionView>
                         </subviews>
