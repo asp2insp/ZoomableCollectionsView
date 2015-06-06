@@ -1,1 +1,1 @@
-!(Demo Video)[walkthrough.gif]
+![Demo Video](walkthrough.gif)
