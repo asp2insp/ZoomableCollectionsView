@@ -1,0 +1,10 @@
+PODS:
+  - M13Checkbox (1.1.2)
+
+DEPENDENCIES:
+  - M13Checkbox
+
+SPEC CHECKSUMS:
+  M13Checkbox: 0c0bb08dcd144c4ea33f883b68270f3f56908ea2
+
+COCOAPODS: 0.37.2

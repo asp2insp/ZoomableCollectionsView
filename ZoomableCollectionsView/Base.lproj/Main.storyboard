@@ -8,7 +8,6 @@
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="ZoomableCollectionsView" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
@@ -38,9 +37,9 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="147" height="142"/>
                                                     <gestureRecognizers/>
                                                 </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="St9-tx-dvF" customClass="UICheckbox" customModule="ZoomableCollectionsView" customModuleProvider="target">
-                                                    <rect key="frame" x="8" y="8" width="30" height="30"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="St9-tx-dvF" customClass="M13Checkbox">
+                                                    <rect key="frame" x="1" y="0.0" width="30" height="30"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="6Gk-uK-eix"/>
                                                         <constraint firstAttribute="width" constant="30" id="k0W-T9-cfg"/>
@@ -51,14 +50,26 @@
                                         </view>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="Ols-ph-1f3" secondAttribute="trailing" id="BvM-Hk-91X"/>
+                                            <constraint firstItem="St9-tx-dvF" firstAttribute="top" secondItem="TTr-oj-wIB" secondAttribute="top" id="D7W-da-FHc"/>
                                             <constraint firstItem="Ols-ph-1f3" firstAttribute="leading" secondItem="TTr-oj-wIB" secondAttribute="leading" id="Dvy-BS-xuo"/>
                                             <constraint firstItem="Ols-ph-1f3" firstAttribute="top" secondItem="TTr-oj-wIB" secondAttribute="top" id="Ecs-z9-Hpc"/>
+                                            <constraint firstItem="St9-tx-dvF" firstAttribute="leading" secondItem="TTr-oj-wIB" secondAttribute="leading" constant="1" id="PsY-b5-hPe"/>
+                                            <constraint firstItem="St9-tx-dvF" firstAttribute="top" secondItem="TTr-oj-wIB" secondAttribute="topMargin" id="YEd-NO-9En"/>
                                             <constraint firstAttribute="bottom" secondItem="Ols-ph-1f3" secondAttribute="bottom" id="fyM-DI-NFT"/>
+                                            <constraint firstItem="St9-tx-dvF" firstAttribute="leading" secondItem="TTr-oj-wIB" secondAttribute="leadingMargin" id="uBb-WO-vVB"/>
                                             <constraint firstItem="St9-tx-dvF" firstAttribute="leading" secondItem="TTr-oj-wIB" secondAttribute="leadingMargin" id="uX5-X0-zFC"/>
                                             <constraint firstItem="St9-tx-dvF" firstAttribute="top" secondItem="TTr-oj-wIB" secondAttribute="topMargin" id="vRq-S9-dfv"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="YEd-NO-9En"/>
+                                                <exclude reference="uBb-WO-vVB"/>
+                                                <exclude reference="uX5-X0-zFC"/>
+                                                <exclude reference="vRq-S9-dfv"/>
+                                            </mask>
+                                        </variation>
                                         <connections>
-                                            <outlet property="checkbox" destination="St9-tx-dvF" id="Sqg-ek-PVr"/>
+                                            <outlet property="checkbox" destination="St9-tx-dvF" id="TPD-99-fGW"/>
                                             <outlet property="image" destination="Ols-ph-1f3" id="DrY-RV-Idf"/>
                                         </connections>
                                     </collectionViewCell>
@@ -79,18 +90,22 @@
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="GGO-Ng-gol" appends="YES" id="3XS-YW-HlW"/>
+                            <outletCollection property="gestureRecognizers" destination="jKV-1p-G8c" appends="YES" id="aCc-gi-XIh"/>
                         </connections>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="kta-jQ-6Z8" id="GuX-h2-3IP"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
                 <pinchGestureRecognizer id="GGO-Ng-gol">
                     <connections>
                         <action selector="didPinch:" destination="vXZ-lx-hvc" id="Gf0-w9-A0X"/>
                     </connections>
                 </pinchGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="jKV-1p-G8c"/>
             </objects>
+            <point key="canvasLocation" x="274" y="329"/>
         </scene>
     </scenes>
 </document>

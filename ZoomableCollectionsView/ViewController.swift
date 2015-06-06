@@ -40,19 +40,18 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("imagecell", forIndexPath: indexPath) as! SelectableImageCell
         
         let nameIndex = indexPath.row % 13 + 1
-        cell.image.image = UIImage(named: "\(nameIndex)")
-        cell.checkbox.backgroundColor = cell.selected ? UIColor.redColor() : UIColor.whiteColor()
+        cell.nameIndex = nameIndex
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SelectableImageCell
-        cell.checkbox.backgroundColor = UIColor.redColor()
+        cell.checkbox.checkState = M13CheckboxStateChecked
     }
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? SelectableImageCell {
-            cell.checkbox.backgroundColor = UIColor.whiteColor()
+            cell.checkbox.checkState = M13CheckboxStateUnchecked
         }
     }
 
@@ -60,12 +59,32 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         switch sender.state {
         case .Began:
             baseSize = flowLayout.itemSize
-        case .Ended, .Cancelled, .Changed:
+        case .Changed:
+            flowLayout.itemSize = aspectScaleWithConstraints(baseSize, scale: sender.scale, max: maxSize, min: minSize)
+        case .Ended, .Cancelled:
             flowLayout.itemSize = aspectScaleWithConstraints(baseSize, scale: sender.scale, max: maxSize, min: minSize)
         default:
             return
         }
     }
+    
+//    func aspectScaleToEvenDivisor(baseSize: CGSize, candidateScale: CGFloat, viewport: CGSize) -> CGSize {
+//        // Constrain to min of viewport
+//        let constraintName = viewport.width < viewport.height ? "width" : "height"
+//        
+//        var finalScale = candidateScale
+//        let sizeWithPadding = CGSizeMake(baseSize.width + flowLayout.minimumInteritemSpacing, baseSize.height * flowLayout.minimumLineSpacing)
+//        
+//        var candidateSize = CGSizeMake(sizeWithPadding.width * candidateScale, sizeWithPadding.height * candidateScale)
+//        if constraintName == "width" {
+//            let numberOfCols = round(viewport.width / candidateSize.width)
+//            finalScale = (viewport.width / numberOfCols) / sizeWithPadding.width
+//        } else {
+//            let numberOfRows = round(viewport.height / candidateSize.height)
+//            finalScale = (viewport.height / numberOfRows) / sizeWithPadding.height
+//        }
+//        return CGSizeMake(baseSize.width * finalScale, baseSize.height * finalScale)
+//    }
     
     func aspectScaleWithConstraints(size: CGSize, scale: CGFloat, max: CGSize, min: CGSize) -> CGSize {
         let maxHScale = fmax(max.width / size.width, 1.0)
@@ -80,6 +99,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
 class SelectableImageCell : UICollectionViewCell {
     @IBOutlet weak var image: UIImageView!
-    @IBOutlet weak var checkbox: UICheckbox!
+    @IBOutlet weak var checkbox: M13Checkbox!
     
+    var nameIndex : Int = 0 {
+        didSet {
+            image.image = UIImage(named: "\(nameIndex)")
+            checkbox.checkState = selected ? M13CheckboxStateChecked : M13CheckboxStateUnchecked
+            checkbox.radius = 0.5 * checkbox.frame.size.width;
+            checkbox.flat = true
+            checkbox.tintColor = checkbox.strokeColor
+            checkbox.checkColor = UIColor.whiteColor()
+        }
+    }
 }
