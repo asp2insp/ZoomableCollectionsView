@@ -16,6 +16,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var maxSize : CGSize!
     let minSize = CGSizeMake(30.0, 30.0)
     
+    // Long press handling
+    var selectionStart : NSIndexPath!
+    var previousRange : [NSIndexPath]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.setCollectionViewLayout(flowLayout, animated: false)
@@ -45,8 +49,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! SelectableImageCell
-        cell.checkbox.checkState = M13CheckboxStateChecked
+        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? SelectableImageCell {
+            cell.checkbox.checkState = M13CheckboxStateChecked
+        }
     }
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
@@ -54,6 +59,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             cell.checkbox.checkState = M13CheckboxStateUnchecked
         }
     }
+    
 
     @IBAction func didPinch(sender: UIPinchGestureRecognizer) {
         switch sender.state {
@@ -68,24 +74,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
     }
     
-//    func aspectScaleToEvenDivisor(baseSize: CGSize, candidateScale: CGFloat, viewport: CGSize) -> CGSize {
-//        // Constrain to min of viewport
-//        let constraintName = viewport.width < viewport.height ? "width" : "height"
-//        
-//        var finalScale = candidateScale
-//        let sizeWithPadding = CGSizeMake(baseSize.width + flowLayout.minimumInteritemSpacing, baseSize.height * flowLayout.minimumLineSpacing)
-//        
-//        var candidateSize = CGSizeMake(sizeWithPadding.width * candidateScale, sizeWithPadding.height * candidateScale)
-//        if constraintName == "width" {
-//            let numberOfCols = round(viewport.width / candidateSize.width)
-//            finalScale = (viewport.width / numberOfCols) / sizeWithPadding.width
-//        } else {
-//            let numberOfRows = round(viewport.height / candidateSize.height)
-//            finalScale = (viewport.height / numberOfRows) / sizeWithPadding.height
-//        }
-//        return CGSizeMake(baseSize.width * finalScale, baseSize.height * finalScale)
-//    }
-    
     func aspectScaleWithConstraints(size: CGSize, scale: CGFloat, max: CGSize, min: CGSize) -> CGSize {
         let maxHScale = fmax(max.width / size.width, 1.0)
         let maxVScale = fmax(max.height / size.height, 1.0)
@@ -94,6 +82,88 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let minVScale = fmin(min.height / size.height, 1.0)
         let scaleBoundedByMin = fmax(fmax(scaleBoundedByMax, minHScale), minVScale)
         return CGSizeMake(size.width * scaleBoundedByMin, size.height * scaleBoundedByMin)
+    }
+    
+    
+    @IBAction func didLongPressAndDrag(sender: UILongPressGestureRecognizer) {
+        let touchCoords = sender.locationInView(collectionView)
+        switch sender.state {
+        case .Began, .Changed:
+            let currentIndex = pointToIndexPath(touchCoords)
+            if currentIndex != nil {
+                if selectionStart == nil {
+                    selectionStart = currentIndex
+                    selectItemAtIndexPathIfNecessary(selectionStart)
+                    return
+                }
+                let itemsToSelect = getIndexRange(start: selectionStart, end: currentIndex!)
+                let itemsToDeselect = difference(previousRange, minus: itemsToSelect)
+                for path in itemsToDeselect {
+                    collectionView.deselectItemAtIndexPath(path, animated: true)
+                    self.collectionView(collectionView, didDeselectItemAtIndexPath: path)
+                }
+                for path in itemsToSelect {
+                    selectItemAtIndexPathIfNecessary(path)
+                }
+                previousRange = itemsToSelect
+            }
+        case .Cancelled, .Ended:
+            selectionStart = nil
+            previousRange = nil
+        default:
+            return
+        }
+    }
+    
+    func selectItemAtIndexPathIfNecessary(path: NSIndexPath) {
+        if !(collectionView.cellForItemAtIndexPath(path)?.selected ?? false) {
+            collectionView.selectItemAtIndexPath(path, animated: true, scrollPosition: UICollectionViewScrollPosition.None)
+            self.collectionView(collectionView, didSelectItemAtIndexPath: path)
+        }
+    }
+    
+    // Return the difference of the given arrays of index paths
+    func difference(a: [NSIndexPath]?, minus b: [NSIndexPath]?) -> [NSIndexPath] {
+        if a == nil {
+            return []
+        }
+        if b == nil {
+            return a!
+        }
+        var final = a!
+        for item in b! {
+            if let index = find(final, item) {
+                final.removeAtIndex(index)
+            }
+        }
+        return final
+    }
+    
+    // Return an array of NSIndexPaths between the given start and end, inclusive
+    func getIndexRange(#start: NSIndexPath, end: NSIndexPath) -> [NSIndexPath] {
+        var range : [NSIndexPath] = []
+        let numItems = abs(start.row - end.row)
+        let section = start.section
+        for var i = 0; i <= numItems; i++ {
+            let newRow = start.row < end.row ? start.row+i : start.row-i
+            if newRow >= 0 && newRow < collectionView.numberOfItemsInSection(section) {
+                range.append(NSIndexPath(forRow: newRow, inSection: section))
+            }
+        }
+        return range
+    }
+    
+    // Convert a touch point to an index path of the cell under the point.
+    // Returns nil if no cell exists under the given point.
+    func pointToIndexPath(point: CGPoint) -> NSIndexPath? {
+        let fingerRect = CGRectMake(point.x-5, point.y-5, 10, 10)
+        for item in collectionView.visibleCells() {
+            let cell = item as! SelectableImageCell
+            if CGRectIntersectsRect(fingerRect, cell.frame) {
+                return collectionView.indexPathForCell(cell)
+            }
+        }
+        return nil
     }
 }
 

@@ -103,7 +103,11 @@
                         <action selector="didPinch:" destination="vXZ-lx-hvc" id="Gf0-w9-A0X"/>
                     </connections>
                 </pinchGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="jKV-1p-G8c"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="jKV-1p-G8c">
+                    <connections>
+                        <action selector="didLongPressAndDrag:" destination="vXZ-lx-hvc" id="5dY-gS-tIk"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="274" y="329"/>
         </scene>
